@@ -46,6 +46,7 @@ const TopBar = () => {
         try {
             await auth.signOut();
             setUser(null);
+            handleClose();  // Close the menu after logout
         } catch (err) {
             console.log(err);
         }
@@ -88,11 +89,11 @@ const TopBar = () => {
                                     open={open}
                                     onClose={handleClose}
                                 >
-                                    <MenuItem component={RouterLink} to="/">
+                                    <MenuItem component={RouterLink} to="/" onClick={handleClose}>
                                         <InfoIcon style={{ marginRight: '3px' }} />
                                         About
                                     </MenuItem>
-                                    <MenuItem component={RouterLink} to="/wordlist">
+                                    <MenuItem component={RouterLink} to="/wordlist" onClick={handleClose}>
                                         <ListIcon style={{ marginRight: '3px' }} />
                                         Word List
                                     </MenuItem>

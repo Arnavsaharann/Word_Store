@@ -7,7 +7,7 @@
 // import Chip from '@mui/material/Chip';
 // import Divider from '@mui/material/Divider';
 // import { makeStyles } from '@mui/styles';
-// import { UserContext } from '../context/UserContext'; // Note the named import
+// import { UserContext } from '../context/UserContext';
 // import GitHubIcon from '@mui/icons-material/GitHub';
 // import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
@@ -78,15 +78,15 @@
 
 // const About = () => {
 //     const classes = useStyles();
-//     const { user } = useContext(UserContext); // Access `user` directly
+//     const { user } = useContext(UserContext);
 
 //     return (
 //         <Container component="main" maxWidth="sm" className={classes.main}>
 //             <div className={classes.paper1}>
 //                 <Paper elevation={0} className={classes.paper}>
 //                     <Desc />
-//                     {!user && (
-//                         <div>
+//                     {user === null && (
+//                         <>
 //                             <Typography style={{ marginTop: '5px' }}>
 //                                 Let's get started!
 //                             </Typography>
@@ -116,7 +116,7 @@
 //                                     </Button>
 //                                 </RouterLink>
 //                             </div>
-//                         </div>
+//                         </>
 //                     )}
 //                 </Paper>
 
@@ -135,7 +135,7 @@
 //                     </Typography>
 
 //                     <Divider />
-//                     <Typography style={{ marginTop: '5px' }}>
+//                     <div style={{ marginTop: '5px' }}>
 //                         <a
 //                             style={{ textDecoration: 'none' }}
 //                             target="_blank"
@@ -150,9 +150,9 @@
 //                                 icon={<GitHubIcon />}
 //                             />
 //                         </a>
-//                     </Typography>
+//                     </div>
 
-//                     <Typography style={{ marginTop: '5px' }}>
+//                     <div style={{ marginTop: '5px' }}>
 //                         <a
 //                             style={{ textDecoration: 'none' }}
 //                             target="_blank"
@@ -167,7 +167,7 @@
 //                                 icon={<LinkedInIcon />}
 //                             />
 //                         </a>
-//                     </Typography>
+//                     </div>
 //                 </Paper>
 //             </div>
 //         </Container>
@@ -304,13 +304,13 @@ const About = () => {
                             {' '}
                             Arnav Saharan{' '}
                         </span>
-                        <br />
-                        <Divider />
+                    </Typography>
+                    <Divider />
+                    <Typography variant="body2" color="textPrimary">
                         React <br />
                         Firebase <br />
                         Material UI <br />
                     </Typography>
-
                     <Divider />
                     <div style={{ marginTop: '5px' }}>
                         <a

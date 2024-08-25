@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -42,10 +41,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
     },
     form: {
         width: '100%',
@@ -112,7 +107,8 @@ const WordList = () => {
                 const querySnapshot = await getDocs(wordsQuery);
                 const fetchedResult = querySnapshot.docs.map(doc => ({
                     id: doc.id,
-                    ...doc.data()
+                    word: doc.data().word.word,
+                    meaning: doc.data().word.meaning,
                 }));
                 setList(fetchedResult.reverse());
             } catch (err) {
@@ -135,6 +131,7 @@ const WordList = () => {
         try {
             const userUid = user.uid;
             const docRef = await addDoc(collection(db, 'words'), { userUid, word, created: Date.now() });
+            setList(prevList => [{ id: docRef.id, word: word.word, meaning: word.meaning }, ...prevList]);
             console.log('Document written with id:', docRef.id);
         } catch (err) {
             console.error('Error adding word to the DB', err);
@@ -145,6 +142,7 @@ const WordList = () => {
         try {
             const wordDoc = doc(db, 'words', id);
             await deleteDoc(wordDoc);
+            setList(prevList => prevList.filter((item) => item.id !== id));
             console.log('Deleted doc:', id);
         } catch (error) {
             console.error('Error deleting document:', error);
@@ -159,7 +157,6 @@ const WordList = () => {
                 `https://api.dictionaryapi.dev/api/v2/entries/en/${search}`
             );
             const word = {
-                id: uuidv4(),
                 word: res.data[0].word,
                 partOfSpeech: res.data[0].meanings[0].partOfSpeech,
                 meaning: res.data[0].meanings[0].definitions[0].definition,
@@ -184,14 +181,12 @@ const WordList = () => {
                 autoClose: 4000,
             });
         } else {
-            setList([word, ...list]);
             addToDB(word);
+            setSearchResult(null);
         }
-        setSearchResult(null);
     };
 
     const removeFromList = (id) => {
-        setList(list.filter((item) => item.id !== id));
         removeFromDb(id);
     };
 
@@ -309,8 +304,8 @@ const WordList = () => {
                             <React.Fragment key={item.id}>
                                 <ListItem>
                                     <ListItemText
-                                        primary={item.word.word}
-                                        secondary={`${item.word.meaning}`}
+                                        primary={item.word}
+                                        secondary={`${item.meaning}`}
                                     />
                                     <ListItemSecondaryAction>
                                         <DeleteForeverIcon
